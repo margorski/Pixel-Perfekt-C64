@@ -6,8 +6,9 @@
 main      sei               ; set interrupt disable flag
 
           jsr clear_screen  ; clear the screen
+		  jsr draw_map
           jsr init_sid      ; init music routine 
-          jsr write_text    ; write three lines of text
+          ;jsr write_text    ; write three lines of text
 
           lda #$00                    ; load our delay animation byte with #$00
           sta delay_animation_pointer ; we EOR against #$01 to flip between colors later
@@ -50,27 +51,6 @@ irq        dec $d019          ; acknowledge IRQ / clear register for next interr
            jsr check_keyboard ; check keyboard controls
 
 
-;=============================
-; Open Top/Bottom borders
-;=============================
 
-           lda #$00       ; clear potential garbage in $3fff
-           sta $3fff
-
-           lda #$f9       ; wait until Raster Line 249
-           cmp $d012
-           bne *-3
-
-           lda $d011      ; Trick the VIC and open the border
-           and #$f7
-           sta $d011
-
-           lda #$ff       ; Wait until Raster Line 255
-           cmp $d012
-           bne *-3
-
-           lda $d011      ; Reset bit 3 for the next frame
-           ora #$08
-           sta $d011
 
            jmp $ea31      ; return to Kernel routine
