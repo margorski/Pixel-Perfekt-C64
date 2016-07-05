@@ -21,30 +21,40 @@ check_d                 lda #%11111011  ; select row 3
                         sta pra 
                         lda prb         ; load column information
                         and #%00000100  ; test 'd' key  
-                        beq go_down
+                        beq go_left
 
 check_u                 lda #%11110111  ; select row 4
                         sta pra 
                         lda prb         ; load column information
                         and #%01000000  ; test 'u' key 
-                        beq go_up
+                        beq go_right
                         rts             ; return     
 
-go_up                   lda $d001
+go_left                 lda $d000
                         cmp #$00        ; check Y-coord whether we are too high
-                        beq skip        ; if top of screen reached, skip
-                        dec $d001       ; decrease y-coord for sprite 1
+                        bne left        ; if top of screen reached, skip
+						lda #$ff
+						sta $d000
+						jmp toggle_postion_bit
+						rts
+left                    dec $d000       ; decrease y-coord for sprite 1
                         rts
 
-go_down                 lda $d001       ; increase y-coord for sprite 1
+go_right                lda $d000       ; increase y-coord for sprite 1
                         cmp #$ff        ; check Y-coord whether whether we are too low
-                        beq skip        ; if bottom of border was reached, skip
-                        inc $d001
+                        bne right       ; if bottom of border was reached, skip
+                        lda #$00
+						sta $d000
+						jmp toggle_postion_bit
+						rts
+right					inc $d000
                         rts
 
 exit_to_basic           lda #$00
                         sta $d015        ; turn off all sprites
                         jmp $ea81        ; jmp to regular interrupt routine
                         rts
-
-skip                    rts              ; don't change Y-Coordinate
+toggle_postion_bit      lda $d010
+						eor #$01 
+						sta $d010
+						rts
