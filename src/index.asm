@@ -38,7 +38,7 @@
 ;============================================================
 
 !source "code/config_symbols.asm"
-!source "code/config_sprites.asm"
+!source "code/config_player.asm"
 
 ;============================================================
 ;  main routine with our custom interrupt

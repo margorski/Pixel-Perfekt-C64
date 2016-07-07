@@ -1,27 +1,16 @@
-;============================================================
-; configuration of the sprite used in the intro
-;============================================================
-
-
-; two locations will be used to at the one hand store the 
-; current shown frame of the sprite animation and on the other
-; hand to keep track of delay to slow down animation
-
 sprite_player_current_frame	= $fb
 delay_animation_pointer     = $fc
+player_state_byte			= $fd
 
-; the toal number of frames (shapes) which make up the animation 
 sprite_frames_player		= 6
 sprite_animation_delay = 6
 ; the sprite pointer for Sprite#0
 sprite_pointer_player		= address_sprites / $40
 
-; those are the shared sprite colors
-; we could have parsed that information from the sprites.spr file
-; but for this simple single-sprite demo we can just write it down
-; manually
 sprite_background_color = $00
 sprite_player_color		= $01
+
+gravity_value = $01
 
 ;============================================================
 ; Initialize Memory Locations not related to VIC-II registers
@@ -38,6 +27,9 @@ sta sprite_player_current_frame
 ; Sprite Pointers are the last 8 bytes of Screen RAM, e.g. $07f8-$07ff
 lda #sprite_pointer_player
 sta screen_ram + $3f8 		
+
+lda #0 
+sta player_state_byte
 
 ;============================================================
 ; Initialize involved VIC-II registers
