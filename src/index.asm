@@ -57,8 +57,8 @@
 ;    subroutines called repeatly during custom 
 ;============================================================
 
-!source "code/sub_update_player.asm"
 !source "code/sub_check_keyboard.asm"
+!source "code/sub_update_player.asm"
 ;!source "code/sub_color_cycle.asm"
 
 ;============================================================
